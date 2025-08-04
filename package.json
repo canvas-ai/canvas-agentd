@@ -1,0 +1,19 @@
+{
+  "name": "canvas-agentd",
+  "version": "1.0.0",
+  "description": "Canvas AgentD runtime",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canvas-ai/canvas-agentd.git"
+  },
+  "author": "me@idnc.sk",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/canvas-ai/canvas-agentd/issues"
+  },
+  "homepage": "https://github.com/canvas-ai/canvas-agentd#readme"
+}
