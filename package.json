@@ -1,10 +1,14 @@
 {
   "name": "canvas-agentd",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Canvas AgentD runtime",
+  "type": "module",
   "main": "./src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/index.js",
+    "api": "node ./src/api/server.js",
+    "dev": "node ./src/cli/repl.js",
+    "test": "node --version"
   },
   "repository": {
     "type": "git",
@@ -15,5 +19,14 @@
   "bugs": {
     "url": "https://github.com/canvas-ai/canvas-agentd/issues"
   },
-  "homepage": "https://github.com/canvas-ai/canvas-agentd#readme"
+  "homepage": "https://github.com/canvas-ai/canvas-agentd#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "uuid": "^11.1.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
 }
