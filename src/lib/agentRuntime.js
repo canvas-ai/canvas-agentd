@@ -3,14 +3,18 @@ import { createBackend } from '../llm/backends/index.js';
 import { createMemory } from '../memory/index.js';
 import { loadPromptTemplates } from '../prompts/loader.js';
 import { createSessionManager } from './sessionManager.js';
+import { loadTools } from '../tools/loader.js';
+import { createToolExecutor } from '../tools/executor.js';
 
 export async function createAgentRuntime(config) {
   const id = uuidv4();
 
-  const backend = await createBackend(config.backend);
+  const backend = await createBackend(config.backend, config);
   const memory = await createMemory(config.memory);
   const prompts = await loadPromptTemplates(config.prompts);
-  const sessions = createSessionManager({ memory, prompts, backend, config });
+  const tools = config.tools?.enabled ? await loadTools(config.tools) : [];
+  const toolExecutor = createToolExecutor();
+  const sessions = createSessionManager({ memory, prompts, backend, config, tools, toolExecutor });
 
   const state = {
     id,
@@ -18,6 +22,8 @@ export async function createAgentRuntime(config) {
     backend,
     memory,
     prompts,
+    tools,
+    toolExecutor,
     sessions,
     status: 'initializing'
   };
@@ -33,6 +39,8 @@ export async function createAgentRuntime(config) {
     get prompts() { return state.prompts; },
     get memory() { return state.memory; },
     get backend() { return state.backend; },
+    get tools() { return state.tools; },
+    get toolExecutor() { return state.toolExecutor; },
     get sessions() { return state.sessions; },
 
     async start() {

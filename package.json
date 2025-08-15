@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node ./src/index.js",
     "api": "node ./src/api/server.js",
-    "dev": "node ./src/cli/repl.js",
+    "cli": "node ./src/cli/repl.js",
     "test": "node --version"
   },
   "repository": {

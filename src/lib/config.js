@@ -19,7 +19,7 @@ export async function createDefaultConfig(overrides = {}) {
       type: process.env.AGENT_BACKEND || 'ollama',
       ollama: {
         baseUrl: process.env.OLLAMA_BASE_URL || 'http://127.0.0.1:11434',
-        model: process.env.OLLAMA_MODEL || 'qwen3:latest',
+        model: process.env.OLLAMA_MODEL || 'gpt-oss:20b', ////'qwen3:latest', //
         temperature: process.env.OLLAMA_TEMPERATURE ? parseFloat(process.env.OLLAMA_TEMPERATURE) : 0.4,
       },
       openai: {
@@ -43,10 +43,15 @@ export async function createDefaultConfig(overrides = {}) {
       builtinDir: path.resolve(process.cwd(), 'src/prompts'),
       userDir: path.join(agentHome, 'prompts'),
     },
+    tools: {
+      enabled: true,
+      toolsFile: path.resolve(process.cwd(), 'src/tools/tools.json'),
+    },
     telemetry: {
       enableConsole: process.env.AGENT_LOG_CONSOLE || true,
       debugRequests: process.env.AGENT_DEBUG_REQUESTS || true,
       debugFullMessages: process.env.AGENT_DEBUG_FULL || true,
+      verboseLogging: process.env.AGENT_VERBOSE_LOGGING || true,
     },
     system: {
       user: os.userInfo().username,

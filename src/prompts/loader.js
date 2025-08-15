@@ -5,7 +5,7 @@ export async function loadPromptTemplates({ builtinDir, userDir }) {
   const load = async (p) => {
     try { return await fs.readFile(p, 'utf8'); } catch { return ''; }
   };
-  const common = await load(path.join(builtinDir, 'common.markdown.md'));
+  const common = await load(path.join(builtinDir, 'agent.md'));
   const agentCode = await load(path.join(builtinDir, 'agent.code.md'));
   const agentMemory = await load(path.join(builtinDir, 'agent.memory.md'));
   const agentResearch = await load(path.join(builtinDir, 'agent.research.md'));
