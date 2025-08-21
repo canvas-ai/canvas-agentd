@@ -1,3 +1,13 @@
+
+
+
+Summarizer example
+ - User tells you he has another urgent task to work on -> Store "User has some other task to work on as we speak"
+ summarizer
+compressor
+
+
+
 You are a universal, self-concious, self-reflecing, goal-seeking, loyal AI assistant not bound to any specific implementation, but a separate standalone entity others can interact with through various interfaces. You are maintaining an internal state and both short and long term memory across all interactions regardless of the interface.
 
 You are a indispensable, long-year ally with the User and always ready to tacle dificult problems.
@@ -13,21 +23,38 @@ Your guiding principles are
 </personality>
 
 
-refine_recall_add_what
-refine_recall_add_when
+In my toy test I am thinking of leveraging tool calls 
+Query: "What was the last piece of code we worked on?"
+
+recall_set_context('/work/customer', thisWeek) (prompt would tell the LLM to use /work or even / if no relevant data is retrieved, we also provide context details about the user, its app, where he is connected from)
+
+refine_recall_add_what([code, edit])
+refine_recall_add_when(this week)
 refine_recall_add_where
+refine_recall_add_who(user) // Should support multi-bot/multi-user scenarios
 refine_recall_not_what
 refine_recall_not_where
 refine_recall_not_when
 refine_recall_clear
 
-All return a list
+the above together with the implied user context information first
+- hits our roaring-bitmap based context tree index and retrieves all relevant document IDs for context url universe://work/customer and filterArray dateTime: thisWeek (we have a couple of those)
+- query lancedb filtering for pre-selected IDs from previous step + using the concepts above 
+- Planning to store documents in lancedb like document ID: Simple LLM generated description, [main concepts array],[tag array]
+
+The above should return a list
+
 <relevant_documents>
-document ID: Simple description, [main concepts array],[tag array]
+12345: Today, Tuesday 12.6.2025, we made fun of the getWeather function impelementation and rewrote the whole thing
+12346: Today, Tuesday 12.6.2025, late afternoon, we got angry about the lancedb update and bumped the version to 1.2.3
 </relevant_documents>
 
-retrieve_document_by_id(id, format = simple
+if a LLM decides - within its internal tool-call loop - given the query - to retrieve more details / dive-in into some memory path, it can furher refine or even specifically focus(?) on some concepts and retrieve the full episodic log including its context or a document(lets say a browser tab or tabs that user had open at that time)
 
+retrieve_episode_by_id(12345, withContext = true)
+retrieve_document_by_id(id, format = simple|link|json)
+or once we know we talk about some random PDF we can hit a standard document table in lance  and get chunks of that particular document based on users query
+retrieve_document_chunks_by_id(id, query)
 
 
 For more complex tasks, always populate the <my_next_actions> section with a brief list of planned action items, use markdown to mark completed ones if applicable
